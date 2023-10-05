@@ -15,8 +15,8 @@ node (){
             
             listaParametros = "${val0} ${val1} ${val2},${val3}"
             sh(""" 
-                chmod -x ./poc_all.sh
-                bash ./poc_all.sh ${listaParametros} 
+                chmod -x poc_all.sh
+                bash poc_all.sh ${listaParametros} 
             """)
         }
         dir("scripts/python") {

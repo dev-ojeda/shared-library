@@ -1,12 +1,13 @@
-#!/usr/bin/bash -xe
+#!/usr/bin/bash 
 
 argumentos=$*
-fields=${argumentos[2]}
-
 function getParametros() {
-    IFS=',' read -ra ip_array <<<"$fields"
-    echo "${ip_array[0]}"
+    IFS=' ' read -ra ip_array <<<"${argumentos}"
     echo "${ip_array[1]}"
+    echo "${ip_array[2]}"
+    echo "${ip_array[3]}"
+    echo "${ip_array[4]}"
+
 }
 
 function getCmd() {
@@ -43,8 +44,8 @@ function reporte () {
     # this flag will make to exit from current subshell on any error
     # inside it (all functions run inside will also break on any error)
     set -e
-    # getParametros
-    reporte
+    getParametros
+    # reporte
     # do more stuff here
 )
 # and here we catch errors
