@@ -1,0 +1,42 @@
+node (){
+    stage("Unit")
+    {
+        def listaParametros = ''
+        def val0 = 'apu-dfi'
+        def val1 = 'LIST'
+        def val2 = "params1"
+        def val3 = "params2"
+        git (
+            branch: 'master', 
+            credentialsId: 'bitbucket-jenkins', 
+            url: 'https://Devojeda81@bitbucket.org/Devojeda81/shared-library.git'
+        )
+        dir("scripts"){
+            
+            listaParametros = "${val0} ${val1} ${val2},${val3}"
+            sh(""" 
+                chmod -x ./poc_all.sh
+                bash ./poc_all.sh ${listaParametros} 
+            """)
+        }
+        dir("scripts/python") {
+            listaParametros = "${val0} ${val1} ${val2},${val3}"
+            sh('''
+                python procesos.py ${listaParametros}
+            ''')
+        }
+    }
+    stage("clean")
+    {
+        dir("${workspace}@tmp"){
+            deleteDir()
+        }
+        dir("${workspace}@script"){
+            deleteDir()
+        }
+        dir("${workspace}@libs"){
+            deleteDir()
+        }
+    }
+    
+}

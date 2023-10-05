@@ -1,0 +1,71 @@
+node (){
+    stage("Unit")
+    {
+        git (
+            branch: 'master', 
+            credentialsId: 'bitbucket-jenkins', 
+            url: 'https://Devojeda81@bitbucket.org/Devojeda81/shared-library.git'
+        )
+        dir("scripts/jq") {
+            sh(' echo "#######" ')
+            sh(' echo "FULL JQ" ')
+            sh('''
+                jq "
+                [.docs[] 
+                    | 
+                        {
+                            title, 
+                            author_name: .author_name[0], 
+                            publish_year: .publish_year[0] 
+                        } 
+                    | select(.publish_year != null and .author_name != null)
+                ]
+                    | sort_by(.publish_year) 
+                    | reverse
+                    | [limit(3;.[])]" book.json
+            ''')
+            sh(' echo "#######" ')
+            sh(' echo "#######" ')
+            sh(' echo "#######" ')
+            sh(' echo "GROUP BY AND COUNT AUTHOR_NAME" ')
+            sh('''
+                jq "
+                [.docs[] 
+                    | 
+                        {
+                            title, 
+                            author_name: .author_name[0], 
+                            publish_year: .publish_year[0] 
+                        } 
+                    | select(.publish_year != null and .author_name != null)
+                ] | group_by(.author_name) | [.[] | {author_name: .[0].author_name, count: . | length}]" book.json
+            ''')
+            sh(' echo "#######" ')
+            sh(' echo "#######" ')
+            // print(salida)
+            // publishHTML ([
+            // allowMissing: false,
+            // alwaysLinkToLastBuild: false,
+            // keepAll: true,
+            // reportDir: '.',
+            // reportFiles: 'output.html',
+            // reportName: 'My Reports',
+            // reportTitles: 'The Report'])
+        }
+        
+    }
+    stage("clean")
+    {
+        deleteDir()
+        dir("${workspace}@tmp"){
+            deleteDir()
+        }
+        dir("${workspace}@script"){
+            deleteDir()
+        }
+        dir("${workspace}@libs"){
+            deleteDir()
+        }
+    }
+    
+}

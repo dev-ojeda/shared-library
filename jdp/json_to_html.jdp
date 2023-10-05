@@ -1,0 +1,35 @@
+@Library('shared-library')_ 
+node (){
+    stage("Unit")
+    {
+        checkout scm
+        dir("scripts/jq"){
+            sh(""" 
+                chmod -x ./git.sh
+                bash ./git.sh
+            """)
+        }
+        // publishHTML ([
+        //     allowMissing: false,
+        //     alwaysLinkToLastBuild: false,
+        //     keepAll: true,
+        //     reportDir: 'scripts/jq',
+        //     reportFiles: 'output.html',
+        //     reportName: 'My Reports',
+        //     reportTitles: 'The Report'])
+    }
+    stage("clean")
+    {
+        deleteDir()
+        dir("${workspace}@tmp"){
+            deleteDir()
+        }
+        dir("${workspace}@script"){
+            deleteDir()
+        }
+        dir("${workspace}@libs"){
+            deleteDir()
+        }
+    }
+    
+}
