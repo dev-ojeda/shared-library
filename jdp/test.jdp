@@ -7,9 +7,9 @@ node (){
         def val2 = "params1"
         def val3 = "params2"
         git (
-            branch: 'master', 
-            credentialsId: 'bitbucket-jenkins', 
-            url: 'https://Devojeda81@bitbucket.org/Devojeda81/shared-library.git'
+            branch: 'feature/poc', 
+            credentialsId: 'github', 
+            url: 'https://github.com/dev-ojeda/shared-library.git'
         )
         dir("scripts"){
             
