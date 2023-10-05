@@ -11,8 +11,7 @@ def main():
     parameter = sys.argv
     paten = re.sub(r"[\([{})\]\'\,\t\\]", "", str(parameter))
     os.chmod("../poc_all.sh", 0o777)
-    output_cmd = p.call(["bash", "../poc_all.sh", paten,
-                        "2>", "/dev/null"], shell=False)
+    output_cmd = p.call(["bash", "../poc_all.sh", paten], shell=True)
     if output_cmd == 0:
         opcion = "exit 0"
     else:
